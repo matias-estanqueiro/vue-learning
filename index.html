@@ -24,7 +24,12 @@
 </head>
 <body>
     <div id="app">
-        <!-- <button v-bind:class="buttonClasses">Click</button> -->
+        <!-- 
+        v-bind (:)
+            - In this case, bind the attributte called class to the result of the expression
+        v-on (@)
+            - In this case, bind the event called click to the result of the expression (a custom method)
+        -->
         <button :class="active ? 'text-red' : 'text-green'" @click="toggle">Click</button>
     </div>
     
@@ -36,6 +41,7 @@
                 }
             },
 
+            // Options API: create a methods object and then add our method here
             methods: {
                 toggle() {
                     this.active = !this.active;
