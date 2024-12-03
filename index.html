@@ -1,53 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <style>
-        html, body {
-            height: 100%;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .text-red {
-            color: red;
-        }
-        .text-green {
-            color: green;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="h-full grid place-items-center">
     <div id="app">
-        <!-- 
-        v-bind (:)
-            - In this case, bind the attributte called class to the result of the expression
-        v-on (@)
-            - In this case, bind the event called click to the result of the expression (a custom method)
-        -->
-        <button :class="active ? 'text-red' : 'text-green'" @click="toggle">Click</button>
+        <section v-show="inProgressAssigments.length" class="border p-1">
+            <h2 class="font-bold mb-2">In Progress</h2>
+
+            <ul>
+                <!-- 
+                <li><input type="checkbox" name="" id=""> Finish Proyect</li>
+                <li><input type="checkbox" name="" id=""> Read Chapter 4</li>
+                <li><input type="checkbox" name="" id=""> Turn in Homework</li> 
+                -->
+
+                <li v-for="assigment in inProgressAssigments" :key="assigment.id">
+                    <label>
+                        <input type="checkbox" v-model="assigment.complete" >
+                        {{ assigment.name }}
+                    </label>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="my-2">
+
+        <section v-show="completedAssigments.length" class="border p-1">
+            <h2 class="font-bold mb-2">Completed</h2>
+
+            <ul>
+                <!-- 
+                <li><input type="checkbox" name="" id=""> Finish Proyect</li>
+                <li><input type="checkbox" name="" id=""> Read Chapter 4</li>
+                <li><input type="checkbox" name="" id=""> Turn in Homework</li> 
+                -->
+
+                <li v-for="assigment in completedAssigments" :key="assigment.id">
+                    <label>
+                        <input type="checkbox" v-model="assigment.complete">
+                        {{ assigment.name }}
+                    </label>
+                </li>
+            </ul>
+        </section>
     </div>
     
     <script>
-        Vue.createApp({
+        let app = {
             data() {
                 return {
-                    active: false
+                    assigments: [
+                        { id: 1, name: 'Finish Proyect', complete: false },
+                        { id: 2, name: 'Read Chapter 4', complete: false },
+                        { id: 3, name: 'Turn in Homework', complete: false }
+                    ]
                 }
             },
 
-            // Options API: create a methods object and then add our method here
-            methods: {
-                toggle() {
-                    this.active = !this.active;
+            computed: {
+                inProgressAssigments() {
+                    return this.assigments.filter(assigment => !assigment.complete);
+                },
+
+                completedAssigments() {
+                    return this.assigments.filter(assigment => assigment.complete);
                 }
             }
-        }).mount('#app');
+        };
+
+        Vue.createApp(app).mount('#app');
     </script>
 </body>
 </html>
